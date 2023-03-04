@@ -36,7 +36,7 @@ class Bot:
 class QuoteBot(Bot):
     def _message_handler(self, update, context):
         to_quote = True
-        if update.message.text =='Vitvizel':
+        if update.message.text =='Danny':
             to_quote = False
             print(to_quote)
         if update.message.text.startswith("Download this video"):
@@ -46,11 +46,16 @@ class QuoteBot(Bot):
 
 class YoutubeBot(Bot):
     def _message_handler(self, update, context):
+        latest_file, latest_mod_time = None, None
         self.download_video=search_download_youtube_video(video_name={update.message.text},num_results=1)
         for file in os.listdir():
             if file.endswith('.mp4'):
-                print(file)
-                self.send_video(update, context ,file)
+                modification_time = os.path.getmtime(file)
+                if not latest_mod_time or modification_time > latest_mod_time:
+                    latest_mod_time = modification_time
+                    latest_file = file
+                    self.send_video(update, context ,latest_file)
+
         print("Video Downloaded Successfully")
 
 if __name__ == '__main__':
