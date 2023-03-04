@@ -12,6 +12,7 @@ class Bot:
         # add _message_handler as main internal msg handler
         self.updater.dispatcher.add_handler(MessageHandler(Filters.text, self._message_handler))
 
+
     def start(self):
         """Start polling msgs from users, this function never returns"""
         self.updater.start_polling()
@@ -52,4 +53,3 @@ if __name__ == '__main__':
 
     my_bot = Bot(_token)
     my_bot.start()
-
