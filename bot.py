@@ -1,6 +1,7 @@
 from telegram.ext import Updater, MessageHandler, Filters
 from utils import search_download_youtube_video
 from loguru import logger
+import os
 
 
 class Bot:
@@ -12,7 +13,6 @@ class Bot:
         # add _message_handler as main internal msg handler
         self.updater.dispatcher.add_handler(MessageHandler(Filters.text, self._message_handler))
 
-
     def start(self):
         """Start polling msgs from users, this function never returns"""
         self.updater.start_polling()
@@ -21,7 +21,7 @@ class Bot:
 
     def _message_handler(self, update, context):
         """Main messages handler"""
-        self.send_text(update, f'Your original message: {update.message.text}')
+        self.send_text(update, f'Your message: {update.message.text}')
 
     def send_video(self, update, context, file_path):
         """Sends video to a chat"""
@@ -36,20 +36,26 @@ class Bot:
 class QuoteBot(Bot):
     def _message_handler(self, update, context):
         to_quote = True
-
-        if update.message.text == 'Don\'t quote me please':
+        if update.message.text =='Vitvizel':
             to_quote = False
-
-        self.send_text(update, f'Your original message: {update.message.text}', quote=to_quote)
-
+            print(to_quote)
+        if update.message.text.startswith("Download this video"):
+            YoutubeBot._message_handler(self, update, context)
+        else:
+            self.send_text(update, f'Your original message: {update.message.text}', quote=to_quote)
 
 class YoutubeBot(Bot):
-    pass
-
+    def _message_handler(self, update, context):
+        self.download_video=search_download_youtube_video(video_name={update.message.text},num_results=1)
+        for file in os.listdir():
+            if file.endswith('.mp4'):
+                print(file)
+                self.send_video(update, context ,file)
+        print("Video Downloaded Successfully")
 
 if __name__ == '__main__':
     with open('.telegramToken') as f:
         _token = f.read()
 
-    my_bot = Bot(_token)
+    my_bot = QuoteBot(_token)
     my_bot.start()
