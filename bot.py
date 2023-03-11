@@ -36,7 +36,7 @@ class Bot:
 class QuoteBot(Bot):
     def _message_handler(self, update, context):
         to_quote = True
-        if update.message.text =='Danny':
+        if update.message.text =='Vitaly':
             to_quote = False
             print(to_quote)
         if update.message.text.startswith("Download this video"):
