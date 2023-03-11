@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-COPY .telegramToken .3
+COPY .telegramToken .
 
 RUN pip3 install -r requirements.txt
 
