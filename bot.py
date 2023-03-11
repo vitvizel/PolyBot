@@ -39,7 +39,7 @@ class QuoteBot(Bot):
         if update.message.text =='Vitaly':
             to_quote = False
             print(to_quote)
-        if update.message.text.startswith("Download this video"):
+        if update.message.text.startswith("Download "):
             YoutubeBot._message_handler(self, update, context)
         else:
             self.send_text(update, f'Your original message: {update.message.text}', quote=to_quote)
